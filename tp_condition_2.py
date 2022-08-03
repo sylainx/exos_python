@@ -1,15 +1,16 @@
 recrutements = {
     "programmation": {
-        "John Doe": 429
+        "John Doe": 429,
+        "John Pierre": 229,
 
     },
     "reseaux": {
-        "Avril Paul": 271
-
+        "Avril Paul": 271,
+        "Appolon Pierre": 129,
     },
     "base_de_donnees": {
-        "Tilus Paul": 313
-
+        "Tilus Paul": 313,
+        "Jerry Poston": 829,
     }
 }
 
@@ -41,6 +42,40 @@ def get_participant_by_category(category):
         print("\n- Base de donnees")
         for key, val in recrutements["base_de_donnees"].items():
             print("\t* {} a obtenu {} pts".format(key, val))
+
+
+def get_category_x_more_participant():
+    categoryName = ""
+    maxValue = 0
+    for key, value in recrutements.items():
+        if maxValue < len(value.keys()):
+            categoryName = key
+            maxValue = len(value.keys())
+    return categoryName
+
+
+def get_laureat_everywhere():
+    participantName = ""
+    maxValue = 0
+    for k, y in recrutements.items():
+        for key, val in y.items():
+            if maxValue < val:
+                participantName = key
+                maxValue = val
+
+    return [participantName, maxValue]
+
+
+def get_laureat_by_category(category):
+    participantName = ""
+    maxValue = 0
+    for k, y in recrutements[category].items():
+        if maxValue < y:
+            participantName = k
+            maxValue = y
+
+    return [participantName, maxValue]
+
 
 def show_sous_menu(command):
     match command:
@@ -90,37 +125,66 @@ def show_sous_menu(command):
                             break
                         if sousMenuInt == 1:
                             get_participant_by_category(1)
-                            
+
                         if sousMenuInt == 2:
                             get_participant_by_category(2)
                         if sousMenuInt == 3:
                             get_participant_by_category(3)
-                        
-                        temp = input("") # important
-                        
-            temp = input("") # important
+
+                        temp = input("")  # important
+
+            temp = input("")  # important
 
         case 4:
             print("\n________| Domaine avec plus de participants |________\n")
-            # afficher toutes les participants
-            
-
-            temp = input("")
+            print("Le domaine avec le plus de participant est: {}".format(
+                get_category_x_more_participant()))
+            temp = input("")  # important
 
         case 5:
             print("\n________| Laureat des laureats |________\n")
             # afficher toutes les participants
-            
-
+            laureatDesLaureats = get_laureat_everywhere()
+            print(
+                f"Le laureat des laureats est: {laureatDesLaureats[0]} avec {laureatDesLaureats[1]} pts")
             temp = input("")
 
         case 6:
-            print("\n________| Rechercher un laureat |________\n")
-            # afficher toutes les participants
+
+            inputSousMenu = ""
+            sousMenuInt = 0
+            laureatCategory=""
             
+            while True:
+                print("\n________| Laureat d'un domain |________\n")
+                print("Quel est son domaine?\n ")
+                print("1- Programmation")
+                print("2- Réseau")
+                print("3- Base de données")
+                print("0- Retour")
+                inputSousMenu = input("R- ")
+                if inputSousMenu.isdigit():
+                    sousMenuInt = int(inputSousMenu)
+                    if sousMenuInt < 0 or sousMenuInt > 3:
+                        print("Incorrect! Le nombre doit etre entre 0 et 3")
+                    else:
+                        if sousMenuInt == 0:
+                            print("\nRetour au menu principal \n")
+                            break
+                        if sousMenuInt == 1:
+                            laureatCategory=get_laureat_by_category("programmation")
+                        elif sousMenuInt == 2:
+                            laureatCategory=get_laureat_by_category("reseaux")
+                        elif sousMenuInt == 3:
+                            laureatCategory= get_laureat_by_category("base_de_donnees")
+
+                        print("Le laureat pour {} est: {} avec {} pts".format("ttt",laureatCategory[0], laureatCategory[1]))
+                        temp = input("")  # important
+
+            temp = input("")  # important
 
             temp = input("")
-            
+
         case other:
             print("Incorrect: ")
             temp = input("")
