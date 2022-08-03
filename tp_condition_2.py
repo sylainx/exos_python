@@ -14,6 +14,9 @@ recrutements = {
     }
 }
 
+def dict_add(obj,key,value):
+    obj[key]=value
+    return obj
 
 def get_participant():
     print("- Programmation")
@@ -74,7 +77,17 @@ def get_laureat_by_category(category):
             participantName = k
             maxValue = y
 
-    return [participantName, maxValue]
+    return [participantName, maxValue, category]
+
+def delete_participant():
+    
+    for k, y in recrutements.items() :
+        for key, note in list(y.items()):
+            if note < 500/2 :
+                print("\nDelete")
+                print(f"Branch: {k.upper()}\nNom complet {key.upper()} - note : {note} ")
+                maxValue = note
+                recrutements[k].pop(key)
 
 
 def show_sous_menu(command):
@@ -95,6 +108,10 @@ def show_sous_menu(command):
                     if sousMenuInt == 0:
                         print("\nRetour au menu principal \n")
                     if sousMenuInt == 1:
+                        create_participant(sousMenuInt)
+                    elif sousMenuInt == 2:
+                        create_participant(sousMenuInt)
+                    elif sousMenuInt == 3:
                         create_participant(sousMenuInt)
 
         case 2:
@@ -178,13 +195,38 @@ def show_sous_menu(command):
                         elif sousMenuInt == 3:
                             laureatCategory= get_laureat_by_category("base_de_donnees")
 
-                        print("Le laureat pour {} est: {} avec {} pts".format("ttt",laureatCategory[0], laureatCategory[1]))
+                        print("Le laureat pour <<{}>> est: {} avec {} pts".format(laureatCategory[2].upper(),laureatCategory[0], laureatCategory[1]))
                         temp = input("")  # important
 
             temp = input("")  # important
-
+        case 7 :
+            print("\n________| 5 premiers laureats |________\n")
+            
+            temp = input("")  # important
+        case 8:
+            inputSousMenu = ""
+            sousMenuInt = 0
+            laureatCategory=""
+            
+            while True:
+                print("\n________| Supprimer participant |________\n")
+                print("Voulez-vous supprimer?\n ")
+                print("1- Oui")
+                print("0- Non")
+                inputSousMenu = input("R- ")
+                if inputSousMenu.isdigit():
+                    sousMenuInt = int(inputSousMenu)
+                    if sousMenuInt < 0 or sousMenuInt > 1:
+                        print("Incorrect! Le nombre doit etre entre 0 ou 1")
+                    else:
+                        if sousMenuInt == 0 :
+                            print("\nRetour au menu principal \n")
+                            break
+                        if sousMenuInt == 1:
+                            delete_participant()
+                            temp = input("")
+                            
             temp = input("")
-
         case other:
             print("Incorrect: ")
             temp = input("")
