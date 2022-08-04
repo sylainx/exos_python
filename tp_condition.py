@@ -75,7 +75,7 @@ if qte >= 4 and qte <= 15:
 
     print("============ QUESTION 2 ===============")
     for i in val:
-        if i % 3 == 0 and i % 5 == 0:
+        if 3%i == 0 and 5%i == 0 and i%2 == 0 and i > 0:
             resultFactorial = factElement(i)
             print("{}! = {}".format(i, resultFactorial))
 
