@@ -14,9 +14,11 @@ recrutements = {
     }
 }
 
-def dict_add(obj,key,value):
-    obj[key]=value
+
+def dict_add(obj, key, value):
+    obj[key] = value
     return obj
+
 
 def get_participant():
     print("- Programmation")
@@ -79,15 +81,22 @@ def get_laureat_by_category(category):
 
     return [participantName, maxValue, category]
 
+
 def delete_participant():
-    
-    for k, y in recrutements.items() :
-        for key, note in list(y.items()):
-            if note < 500/2 :
-                print("\nDelete")
-                print(f"Branch: {k.upper()}\nNom complet {key.upper()} - note : {note} ")
-                maxValue = note
-                recrutements[k].pop(key)
+    new_list = []
+    for cleDomaine, domaine in recrutements.items():
+        for cle, values in domaine.items():
+            new_list.append([values, cle])
+
+    array = sorted(new_list)
+
+    for index, ar in enumerate(array):
+        if(index >= 0 and index <= 4):
+            for cleDomaine, domaine in list(recrutements.items()):
+                for cle, values in list(domaine.items()):
+                    if cle == ar[1]:
+                        recrutements[cleDomaine].pop(cle)
+                        print(f"participant {ar[1]} suprimmer")
 
 
 def show_sous_menu(command):
@@ -170,8 +179,8 @@ def show_sous_menu(command):
 
             inputSousMenu = ""
             sousMenuInt = 0
-            laureatCategory=""
-            
+            laureatCategory = ""
+
             while True:
                 print("\n________| Laureat d'un domain |________\n")
                 print("Quel est son domaine?\n ")
@@ -189,25 +198,43 @@ def show_sous_menu(command):
                             print("\nRetour au menu principal \n")
                             break
                         if sousMenuInt == 1:
-                            laureatCategory=get_laureat_by_category("programmation")
+                            laureatCategory = get_laureat_by_category(
+                                "programmation")
                         elif sousMenuInt == 2:
-                            laureatCategory=get_laureat_by_category("reseaux")
+                            laureatCategory = get_laureat_by_category(
+                                "reseaux")
                         elif sousMenuInt == 3:
-                            laureatCategory= get_laureat_by_category("base_de_donnees")
+                            laureatCategory = get_laureat_by_category(
+                                "base_de_donnees")
 
-                        print("Le laureat pour <<{}>> est: {} avec {} pts".format(laureatCategory[2].upper(),laureatCategory[0], laureatCategory[1]))
+                        print("Le laureat pour <<{}>> est: {} avec {} pts".format(
+                            laureatCategory[2].upper(), laureatCategory[0], laureatCategory[1]))
                         temp = input("")  # important
 
             temp = input("")  # important
-        case 7 :
+        case 7:
             print("\n________| 5 premiers laureats |________\n")
-            
+
+            new_list = []
+            for cleDomaine, domaine in recrutements.items():
+                for cle, values in domaine.items():
+                    new_list.append([values, cle])
+
+            array = sorted(new_list, reverse=True)
+
+            for index, ar in enumerate(array):
+                if (index >= 0 and index <= 4):
+                    for cleDomaine, domaine in list(recrutements.items()):
+                        for cle, values in list(domaine.items()):
+                            if cle == ar[1]:
+                                print(f"{ar[1]}({cleDomaine})")
+
             temp = input("")  # important
         case 8:
             inputSousMenu = ""
             sousMenuInt = 0
-            laureatCategory=""
-            
+            laureatCategory = ""
+
             while True:
                 print("\n________| Supprimer participant |________\n")
                 print("Voulez-vous supprimer?\n ")
@@ -219,13 +246,13 @@ def show_sous_menu(command):
                     if sousMenuInt < 0 or sousMenuInt > 1:
                         print("Incorrect! Le nombre doit etre entre 0 ou 1")
                     else:
-                        if sousMenuInt == 0 :
+                        if sousMenuInt == 0:
                             print("\nRetour au menu principal \n")
                             break
                         if sousMenuInt == 1:
                             delete_participant()
                             temp = input("")
-                            
+
             temp = input("")
         case other:
             print("Incorrect: ")
@@ -234,18 +261,23 @@ def show_sous_menu(command):
 
 def create_participant(category):
     nom = input("Entrer son nom: ")
-    note = int(input("Entrer sa note( 500 max): "))
-    if note < 0 or note > 500:
-        print("La Note doit etre entre 0 et 500")
+    while True:
+        note =input("Entrer sa note( 500 max): ")
+        if note.isdigit():
+            note = int(note)
+            if note < 0 or note > 500:
+                print("La Note doit etre entre 0 et 500")
+            if note >= 0 and note <= 500:
+                break
+
+    if category == 1:
+        recrutements["programmation"][nom] = note
+    elif category == 2:
+        recrutements["reseaux"][nom] = note
+    elif category == 3:
+        recrutements["base_de_donnees"][nom] = note
     else:
-        if category == 1:
-            recrutements["programmation"][nom] = note
-        elif category == 2:
-            recrutements["reseaux"][nom] = note
-        elif category == 3:
-            recrutements["base_de_donnees"][nom] = note
-        else:
-            print("Incorrect")
+        print("Incorrect")
 
 
 # =================   M A I N   P R O J E C T   ===============
